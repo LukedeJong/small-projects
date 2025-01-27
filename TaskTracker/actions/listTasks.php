@@ -1,19 +1,9 @@
 <?php
 
-require_once 'getTasks.php';
-
-function listTasks()
+function listTasks($pdo)
 {
-    $tasks = getTasks();
-    if (empty($tasks)) {
-        echo "\nNo tasks available.\n";
-
-        return;
-    }
-
-    echo "\nTasks:\n";
-    foreach ($tasks as $index => $task) {
-        $status = $task['completed'] ? '[Completed]' : '';
-        echo ($index + 1).". $status ".$task['task']."\n";
+    $stmt = $pdo->query('SELECT * FROM tasks');
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "{$row['id']}: {$row['title']} [{$row['status']}]\n";
     }
 }
